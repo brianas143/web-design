@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080610"><title>Original Spinning Bouquet 💐</title>
 <style>*{box-sizing:border-box}html,body{height:100%;margin:0;background:#080610;color:#f8c1d9;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}main{height:100dvh;display:flex;flex-direction:column;align-items:center;padding:10px 8px max(env(safe-area-inset-bottom),10px)}h1{font-size:13px;letter-spacing:2px;margin:9px 0 4px;color:#ffc0de;font-weight:500}p{font-size:11px;text-align:center;opacity:.65;margin:1px 0 7px}canvas{width:100%;height:100%;min-height:0;flex:1;object-fit:contain;touch-action:pan-y}a{color:#ffb8da}.back{font-size:10px;text-decoration:none;margin:4px 0 6px}</style></head>
-<body><main><h1>✧ A LITTLE BOUQUET FOR YOU ✧</h1><p>The original rotating pixel/terminal-style bouquet — adapted for your phone</p><canvas id="c" aria-label="Animated spinning bouquet with colorful flowers, sparkles and hearts"></canvas><a class="back" href="./original-bouquet.py">View original Python source</a></main>
+<body><main><h1>✧ A LITTLE BOUQUET FOR GABRIELA ✧</h1><canvas id="c" aria-label="A colorful spinning bouquet for Gabriela"></canvas></main>
 <script>
 (()=>{
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d',{alpha:false});
@@ -60,7 +60,7 @@ else{let v=(1-dy)/2;if(v<0||v>1)continue;let hw=.62*Math.sin(Math.PI*.5*Math.min
 for(let p of babies){let [col,row,zt]=project(p[0],p[1],p[2]),star=Math.sin(t*2+p[3])>.6;plot(col,row,zt+.02,star?'*':'·',star?231:255)}
 for(let p of sparkles){let [col,row,zt]=project(p[0],p[1],p[2]),tw=Math.sin(t*p[4]+p[3]);if(tw>.85)plot(col,row,zt,'*',231);else if(tw>.4)plot(col,row,zt,'+',225);else if(tw>0)plot(col,row,zt,'·',218)}
 function message(text,row,palette){let start=Math.max(0,Math.floor((cols-text.length)/2));for(let i=0;i<text.length&&start+i<cols;i++){let n=row*cols+start+i;chars[n]=text[i];colors[n]=palette[(i+Math.floor(t*6))%palette.length]}}
-message('for you ♥',rows-2,MSG);message('@alishsharma on tiktok!',rows-1,[238]);
+message('for you ♥',rows-2,MSG);message('Gabriela, you are amazing ♡',rows-1,[205,211,218,225]);
 ctx.fillStyle='#080610';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.font=(cellH*.88)+'px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
 for(let i=0;i<chars.length;i++){if(chars[i]===' ')continue;ctx.fillStyle=color(colors[i]);ctx.fillText(chars[i],(i%cols+.5)*cellW,(Math.floor(i/cols)+.54)*cellH)}
 }
