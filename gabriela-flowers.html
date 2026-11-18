@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080610"><title>A Little Bouquet for Gabriela 💐</title>
+<style>*{box-sizing:border-box}html,body{height:100%;margin:0;background:#080610;color:#f8c1d9;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}main{height:100dvh;display:flex;flex-direction:column;align-items:center;padding:10px 8px max(env(safe-area-inset-bottom),10px)}h1{font-size:13px;letter-spacing:2px;margin:9px 0 4px;color:#ffc0de;font-weight:500}p{font-size:11px;text-align:center;opacity:.65;margin:1px 0 7px}canvas{width:100%;height:100%;min-height:0;flex:1;object-fit:contain;touch-action:pan-y}a{color:#ffb8da}.back{font-size:10px;text-decoration:none;margin:4px 0 6px} .dedication{font-size:clamp(11px,2.6vw,14px);line-height:1.65;letter-spacing:.25px;text-align:center;color:#ffd0e5;padding:6px 12px 13px;text-shadow:0 0 14px #e65e9c55} </style></head>
+<body><main><h1>✧ JUST FOR YOU, GABRIELA ✧</h1><canvas id="c" aria-label="A colorful spinning bouquet for Gabriela"></canvas><div class="dedication">Some people make ordinary days feel a little brighter.<br>Gabriela, you’re one of those people. ♡</div></main>
+<script>
+(()=>{
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d',{alpha:false});
+const TWO=Math.PI*2,greens=[22,28,28,34,35,71,77,114],paper=[101,144,187,223,230,231],ribbon=[88,125,161,197,204,211];
+const WHITE=[244,248,251,254,255,231],PINK=[125,162,168,205,211,218,225],RED=[52,88,124,160,196,203],PURPLE=[54,91,97,134,140,183],YELLOW=[136,178,214,220,226,229],ORANGE=[130,166,202,208,214,216],GOLD=[94,136,178,214,220],DARK=[52,58,94,130,136],HEART=[161,197,204,205,211,218],MSG=[161,168,205,211,218,225,218,211,205,168];
+const discs=[[WHITE,GOLD,13],[PINK,GOLD,8],[RED,DARK,6],[PURPLE,GOLD,7],[YELLOW,DARK,12],[ORANGE,DARK,9]],SHADES=".:-=+*%@",PETALS="+*#%";
+function seeded(v){return ()=>{v|=0;v=v+0x6D2B79F5|0;let t=Math.imul(v^v>>>15,1|v);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296}}
+const rnd=seeded(21);
+function norm(v){const m=Math.hypot(...v)||1;return v.map(n=>n/m)}
+function cross(a,b){return[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
+function add(p,d,k){return p.map((v,i)=>v+d[i]*k)}
+const pts=[],flowers=[],babies=[],sparkles=[],hearts=[];
+function put(p,n,pal,tone=0,two=false,ch=null){pts.push([...p,...n,pal,tone,two,ch])}
+const neck=[0,-.12,0],C=[0,.12,0],golden=Math.PI*(3-Math.sqrt(5)),heads=[];
+for(let i=0;i<10;i++){let el=(88-60*Math.sqrt(i/9))*Math.PI/180,az=i*golden,d=[Math.cos(el)*Math.cos(az),Math.sin(el),Math.cos(el)*Math.sin(az)];heads.push([add(C,d,.64*(.92+rnd()*.13)),norm(d)])}
+let discI=0;
+heads.forEach(([pos,axis],idx)=>{
+const base=add(pos,axis,-.03);
+for(let j=0;j<70;j++){let t=j/69,p=base.map((v,k)=>v+(neck[k]-v)*t);put(p,[axis[0],0,axis[2]],greens,-.15,true)}
+if(idx===3||idx===8){flowers.push([pos,"tulip",idx===3?RED:PINK,null,0,.11,rnd()*TWO])}
+else{let [pal,center,count]=discs[discI++%discs.length];flowers.push([pos,"disc",pal,center,count,.12+rnd()*.02,rnd()*TWO])}
+});
+for(let i=0;i<8;i++){let a=(i+.4)/8*TWO,c=Math.cos(a),s=Math.sin(a),base=[.26*c,.30,.26*s],d=norm([c,.15,s]),side=[-s,0,c],n=norm(cross(side,d));
+for(let ti=0;ti<32;ti++){let t=ti/31;for(let wi=-5;wi<=5;wi++){let w=wi/5,curl=.025*w*w,p=[base[0]+d[0]*.30*t+side[0]*.07*Math.sin(Math.PI*t)*w+n[0]*curl,base[1]+d[1]*.30*t-.10*t*t+n[1]*curl,base[2]+d[2]*.30*t+side[2]*.07*Math.sin(Math.PI*t)*w+n[2]*curl];put(p,n,greens,wi===0?-.25:0,true)}}}
+const k=.6;for(let i=0;i<50;i++){let t=i/49,r=.06+.30*t,count=Math.max(8,Math.floor(170*r));for(let j=0;j<count;j++){let ph=(j+rnd())/count*TWO,c=Math.cos(ph),s=Math.sin(ph),y=-.20+.50*t;if(t>.9)y+=.03*Math.sin(9*ph);let fold=.3*(Math.abs(Math.sin(5*ph))-.6);put([r*c,y,r*s],norm([c,-k,s]),paper,fold)}}
+for(let i=0;i<7;i++){let a=i/7*TWO,sx=.025*Math.cos(a),sz=.025*Math.sin(a);for(let j=0;j<40;j++){let t=j/39;put([sx*(1+1.2*t),-.2-.3*t,sz*(1+1.2*t)],[Math.cos(a),0,Math.sin(a)],greens,-.1,true)}}
+const by=-.12,br=.06+k*(by+.20)+.01;for(let j=0;j<90;j++){let ph=j/90*TWO;for(let dy of[-.012,0,.012])put([br*Math.cos(ph),by+dy,br*Math.sin(ph)],[Math.cos(ph),0,Math.sin(ph)],ribbon)}
+const knot=[0,by,br+.01];for(let side of[-1,1]){for(let j=0;j<70;j++){let a=j/70*TWO,lx=side*(.07+.07*Math.cos(a)),ly=.04*Math.sin(a)+.02*(.07+.07*Math.cos(a))/.14;for(let f of[1,.7])put([lx*f,by+ly*f,knot[2]+.01],[side*.3,.2,.93],ribbon,.1,true)}
+for(let j=0;j<30;j++){let t=j/29;put([side*.06*t,by-.15*t,knot[2]+.015],[side*.2,0,.98],ribbon,-.05+.05*Math.sin(t*9),true)}}
+for(let dx of[-.01,0,.01])put([dx,by,knot[2]+.02],[0,0,1],ribbon,.2,true,"@");
+for(let i=0;i<90;i++){let a=rnd()*TWO,el=.3+rnd()*1.1,rr=.4+rnd()*.18;babies.push([rr*Math.cos(a)*Math.cos(el),C[1]+rr*Math.sin(el),rr*Math.sin(a)*Math.cos(el),rnd()*TWO])}
+for(let i=0;i<30;i++){let a=rnd()*TWO,rr=.75+rnd()*.20;sparkles.push([rr*Math.cos(a),-.3+rnd()*1.3,rr*Math.sin(a),rnd()*TWO,1.5+rnd()*2.5])}
+for(let i=0;i<18;i++)hearts.push([Math.random(),Math.random(),.03+Math.random()*.05,Math.random()*TWO,HEART[Math.floor(Math.random()*HEART.length)]]);
+const basic=[0,95,135,175,215,255];
+function rgb(code){if(code>=232){let c=(code-232)*10+8;return 'rgb('+c+','+c+','+c+')'}if(code<16)return '#eee';let n=code-16,r=Math.floor(n/36),g=Math.floor(n/6)%6,b=n%6;return 'rgb('+basic[r]+','+basic[g]+','+basic[b]+')'}
+const colorCache={};function color(n){return colorCache[n]||(colorCache[n]=rgb(n))}
+let cols=55,rows=32,cellW=8,cellH=14,viewRows=30,zbuf,chars,colors;
+function resize(){const rect=canvas.getBoundingClientRect();let dpr=Math.min(2,devicePixelRatio||1);canvas.width=Math.max(1,Math.floor(rect.width*dpr));canvas.height=Math.max(1,Math.floor(rect.height*dpr));cols=Math.max(35,Math.min(92,Math.floor(rect.width/7.5)));rows=Math.max(21,Math.min(48,Math.floor(rect.height/12.4)));cellW=canvas.width/cols;cellH=canvas.height/rows;viewRows=rows-2;ctx.font=(cellH*.83)+'px monospace';ctx.textBaseline='middle';ctx.textAlign='center'}
+addEventListener('resize',resize);resize();
+function draw(t,dt){
+zbuf=new Float32Array(cols*rows).fill(-1e9);chars=new Array(cols*rows).fill(' ');colors=new Uint16Array(cols*rows);
+const scale=Math.max(1,Math.min((viewRows-2)/1.45,(cols-2)/2.7)),sx=scale*2,cx=cols/2,cy=1+.78*scale,ang=t*.6,ca=Math.cos(ang),sa=Math.sin(ang),ct=Math.cos(.30),st=Math.sin(.30);
+function project(x,y,z){let xr=x*ca-z*sa,zr=x*sa+z*ca,yp=y-.2,yt=yp*ct-zr*st,zt=yp*st+zr*ct,f=4/(4-zt);return[cx+xr*f*sx,cy-yt*f*scale,zt,f]}
+function plot(x,y,z,ch,color){let col=Math.floor(x),row=Math.floor(y);if(row>=0&&row<viewRows&&col>=0&&col<cols){let i=row*cols+col;if(z>zbuf[i]){zbuf[i]=z;chars[i]=ch;colors[i]=color}}}
+for(let h of hearts){h[1]-=h[2]*dt;if(h[1]<0){h[0]=Math.random();h[1]=1;h[4]=HEART[Math.floor(Math.random()*HEART.length)]}plot((h[0]+.015*Math.sin(t*1.2+h[3]))*cols,h[1]*viewRows,-50,'♥',h[4])}
+const L=[-.45,.6,.66],ln=Math.hypot(...L),LX=L[0]/ln,LY=L[1]/ln,LZ=L[2]/ln;
+for(let p of pts){let[x,y,z,nx,ny,nz,pal,tone,two,override]=p,[col,row,zt]=project(x,y,z),nxr=nx*ca-nz*sa,nzr=nx*sa+nz*ca,nyt=ny*ct-nzr*st,nzt=ny*st+nzr*ct,dot=nxr*LX+nyt*LY+nzt*LZ;
+if(two&&dot<0)dot=-dot*.55;let b=Math.max(0,Math.min(.999,.25+.75*Math.max(0,dot)+tone));let ch=override||(override==='P'?PETALS[Math.floor(b*PETALS.length)]:SHADES[Math.floor(b*SHADES.length)]);plot(col,row,zt,ch,pal[Math.floor(b*pal.length)])}
+for(let flower of flowers){let [[x,y,z],kind,pal,cpal,npet,R,seed]=flower,[fx,fy,zt,f]=project(x,y,z),rx=R*f*sx,ry=R*f*scale,dim=-.4*(1-Math.max(0,Math.min(1,(zt+.6)/1.2))),rot=seed+ang*.7;
+for(let row=Math.floor(fy-ry)-1;row<=Math.floor(fy+ry)+1;row++){let dy=(row+.5-fy)/ry;for(let col=Math.floor(fx-rx)-1;col<=Math.floor(fx+rx)+1;col++){let dx=(col+.5-fx)/rx;
+if(kind==='disc'){let s=Math.hypot(dx,dy);if(s>1)continue;if(s<.3){let b=Math.max(0,Math.min(.999,.55-.35*dx-.35*dy+dim));plot(col,row,zt+.06,s<.17?'@':'o',cpal[Math.floor(b*cpal.length)]);continue}
+let ph=Math.atan2(dy,dx),reach=.32+.68*Math.pow(Math.abs(Math.cos(npet*(ph+rot)/2)),.7);if(s>reach)continue;
+let edge=s>reach-.14?-.22:0,b=Math.max(0,Math.min(.999,.62-.22*dx-.28*dy+.12*s+edge+dim));plot(col,row,zt+.04*(1-s),PETALS[Math.floor(b*PETALS.length)],pal[Math.floor(b*pal.length)])}
+else{let v=(1-dy)/2;if(v<0||v>1)continue;let hw=.62*Math.sin(Math.PI*.5*Math.min(1,v*1.5+.05));if(hw<=0||Math.abs(dx)>hw)continue;let xn=dx/hw;if(v>.72+.28*Math.pow(Math.cos(1.5*Math.PI*xn),2))continue;let seam=Math.abs(Math.abs(xn)-.33)<.12&&v>.3?-.25:0,b=Math.max(0,Math.min(.999,.55-.3*xn+.1*v+seam+dim));plot(col,row,zt+.03,PETALS[Math.floor(b*PETALS.length)],pal[Math.floor(b*pal.length)])}
+}}}
+for(let p of babies){let [col,row,zt]=project(p[0],p[1],p[2]),star=Math.sin(t*2+p[3])>.6;plot(col,row,zt+.02,star?'*':'·',star?231:255)}
+for(let p of sparkles){let [col,row,zt]=project(p[0],p[1],p[2]),tw=Math.sin(t*p[4]+p[3]);if(tw>.85)plot(col,row,zt,'*',231);else if(tw>.4)plot(col,row,zt,'+',225);else if(tw>0)plot(col,row,zt,'·',218)}
+function message(text,row,palette){let start=Math.max(0,Math.floor((cols-text.length)/2));for(let i=0;i<text.length&&start+i<cols;i++){let n=row*cols+start+i;chars[n]=text[i];colors[n]=palette[(i+Math.floor(t*6))%palette.length]}}
+message('for you ♥',rows-2,MSG);message('a little sunshine for you ♡',rows-1,[205,211,218,225]);
+ctx.fillStyle='#080610';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.font=(cellH*.88)+'px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+for(let i=0;i<chars.length;i++){if(chars[i]===' ')continue;ctx.fillStyle=color(colors[i]);ctx.fillText(chars[i],(i%cols+.5)*cellW,(Math.floor(i/cols)+.54)*cellH)}
+}
+let last=performance.now(),start=last;function frame(now){let dt=Math.min(.1,(now-last)/1000);last=now;draw((now-start)/1000,dt);setTimeout(()=>requestAnimationFrame(frame),1000/24)}requestAnimationFrame(frame);
+})();
+</script></body></html>
